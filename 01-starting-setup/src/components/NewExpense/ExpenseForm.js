@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 
 import "./ExpenseForm.css";
+import ExpenseFormActions from "./ExpenseFormActions";
+import ExpenseFormControls from "./ExpenseFormControls";
+import ExpenseFormNew from "./ExpenseFormNew";
 
 const ExpenseForm = (props) => {
+  const [showControls, setShowControls] = useState(false);
+
   const [enteredTitle, setEnteredTitle] = useState("");
   const titleChangeHandler = (e) => {
     setEnteredTitle(e.target.value);
@@ -39,6 +44,12 @@ const ExpenseForm = (props) => {
   //   });
   // };
 
+  const clearForm = () => {
+    setEnteredTitle("");
+    setEnteredAmount("");
+    setEnteredDate("");
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
     const expenseData = {
@@ -47,46 +58,27 @@ const ExpenseForm = (props) => {
       date: new Date(enteredDate),
     };
     props.onSaveExpense(expenseData);
-    setEnteredTitle("");
-    setEnteredAmount("");
-    setEnteredDate("");
+    clearForm();
+  };
+
+  const switchControls = (e) => {
+    setShowControls((prev) => !prev);
+    clearForm();
   };
 
   return (
-    <form onSubmit={submitHandler}>
-      <div className="new-expense__controls">
-        <div className="new-expense__control">
-          <label>Title</label>
-          <input
-            type="text"
-            value={enteredTitle}
-            onChange={titleChangeHandler}
-          />
-        </div>
-        <div className="new-expense__control">
-          <label>Amount</label>
-          <input
-            type="number"
-            min="0.01"
-            step="0.01"
-            value={enteredAmount}
-            onChange={amountChangeHandler}
-          />
-        </div>
-        <div className="new-expense__control">
-          <label>Date</label>
-          <input
-            type="date"
-            min="2019-01-01"
-            max="2022-01-01"
-            value={enteredDate}
-            onChange={dateChangeHandler}
-          />
-        </div>
-      </div>
-      <div className="new-expense__actions">
-        <button type="submit">Add Expense</button>
-      </div>
+    <form onSubmit={submitHandler} onReset={switchControls}>
+      <ExpenseFormNew visible={!showControls} onNew={switchControls} />
+      <ExpenseFormControls
+        visible={showControls}
+        enteredTitle={enteredTitle}
+        titleChangeHandler={titleChangeHandler}
+        enteredAmount={enteredAmount}
+        amountChangeHandler={amountChangeHandler}
+        enteredDate={enteredDate}
+        dateChangeHandler={dateChangeHandler}
+      />
+      <ExpenseFormActions visible={showControls} />
     </form>
   );
 };
