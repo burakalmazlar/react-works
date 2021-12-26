@@ -4,21 +4,19 @@ import Card from "../UI/Card";
 import "./ExpenseItem.css";
 
 function ExpenseItem(props) {
-  const expenseDate = props.date;
-  const expenseTitle = props.title;
-  const expenseAmount = props.amount;
-  const clickHandler = () => {
-    console.log(new Date().toUTCString());
-  };
+  // console.log("Evaluated ExpenseItem => " + props.title);
+
+  const date = props.date;
+  const title = props.title;
+  const amount = props.amount;
 
   return (
     <Card className="expense-item">
-      <ExpenseDate date={expenseDate} />
+      <ExpenseDate date={date} />
       <div className="expense-item__description">
-        <h2>{expenseTitle}</h2>
-        <div className="expense-item__price">${expenseAmount}</div>
+        <h2>{title}</h2>
+        <div className="expense-item__price">${amount}</div>
       </div>
-      <button onClick={clickHandler}>Change Title</button>
     </Card>
   );
 }
