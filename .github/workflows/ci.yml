@@ -1,0 +1,45 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Bump version and push tag
+      id: autotag
+      uses: anothrNick/github-tag-action@1.36.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WITH_V: true
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.autotag.outputs.new_tag }}
+        release_name: ${{ steps.autotag.outputs.new_tag }}
+        draft: false
+        prerelease: false
+
+    - name: Build & Push Docker Image to Docker Hub
+      uses: mr-smithers-excellent/docker-build-push@v5
+      with:
+        directory: 01-starting-setup
+        image: burakalmazlar/react01
+        tags: ${{ steps.autotag.outputs.new_tag }}, latest
+        registry: docker.io
+        buildArgs: REVISION=${{ steps.autotag.outputs.new_tag }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
