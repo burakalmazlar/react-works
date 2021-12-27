@@ -36,7 +36,8 @@ jobs:
     - name: Build & Push Docker Image to Docker Hub
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
-        directory: 01-starting-setup
+        directory: ${{ GITHUB_WORKSPACE }}/01-starting-setup
+        dockerfile: ${{ GITHUB_WORKSPACE }}/01-starting-setup/Dockerfile
         image: burakalmazlar/react01
         tags: ${{ steps.autotag.outputs.new_tag }}, latest
         registry: docker.io
