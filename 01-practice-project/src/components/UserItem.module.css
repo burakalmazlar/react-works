@@ -1,0 +1,6 @@
+.user-item {
+  margin: 0.3rem 0;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  border: 0.1rem solid #cccccc;
+}
