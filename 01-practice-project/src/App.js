@@ -12,14 +12,14 @@ function App() {
   };
 
   return (
-    <div>
+    <>
       <div className="card">
         <UserForm onAddUser={addUserHandler} />
       </div>
       <div className="card">
         <UserList users={users} />
       </div>
-    </div>
+    </>
   );
 }
 

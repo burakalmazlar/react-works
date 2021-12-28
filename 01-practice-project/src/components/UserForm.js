@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment, useRef } from "react";
 
 import WarningPopup from "./WarningPopup";
 import styles from "./UserForm.module.css";
@@ -6,61 +6,51 @@ import Button from "./UI/Button/Button";
 
 const UserForm = (props) => {
   const [id, setId] = useState(1);
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
-  const [isWarned, setIsWarned] = useState(false);
-  const [warning, setWarning] = useState("");
+  const [warning, setWarning] = useState();
+  const nameRef = useRef();
+  const ageRef = useRef();
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
+    const name = nameRef.current.value;
+    const age = +ageRef.current.value;
     if (name.length === 0) {
-      setIsWarned(true);
       setWarning("Name is mandatory.");
-    } else if (+age < 1) {
-      setIsWarned(true);
+    } else if (age < 1) {
       setWarning("Age must be more than zero.");
     } else {
-      props.onAddUser({ key: id, name: name, age: +age });
+      props.onAddUser({ key: id, name: name, age: age });
       setId((prev) => ++prev);
-      setName("");
-      setAge("");
+      nameRef.current.value = "";
+      ageRef.current.value = "";
     }
   };
 
-  const nameChangeHandler = (e) => {
-    setName(e.target.value.trim());
-  };
-
-  const ageChangeHandler = (e) => {
-    setAge(e.target.value);
-  };
-
   const warningCloseHandler = (e) => {
-    setIsWarned(false);
-    setWarning("");
+    setWarning();
   };
 
   return (
-    <div>
+    <Fragment>
       <form onSubmit={formSubmitHandler}>
         <div>
           <div className={styles["form-control"]}>
             <label>Name</label>
-            <input type="text" value={name} onChange={nameChangeHandler} />
+            <input type="text" ref={nameRef} />
           </div>
           <div className={styles["form-control"]}>
             <label>Age</label>
-            <input type="number" value={age} onChange={ageChangeHandler} />
+            <input type="number" ref={ageRef} />
           </div>
           <Button type="submit" className={styles.button}>
             Add User
           </Button>
         </div>
       </form>
-      {isWarned && (
+      {warning && (
         <WarningPopup message={warning} onClose={warningCloseHandler} />
       )}
-    </div>
+    </Fragment>
   );
 };
 
