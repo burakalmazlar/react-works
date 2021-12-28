@@ -26,10 +26,6 @@ const UserForm = (props) => {
     }
   };
 
-  const warningCloseHandler = (e) => {
-    setWarning();
-  };
-
   return (
     <Fragment>
       <form onSubmit={formSubmitHandler}>
@@ -48,7 +44,7 @@ const UserForm = (props) => {
         </div>
       </form>
       {warning && (
-        <WarningPopup message={warning} onClose={warningCloseHandler} />
+        <WarningPopup message={warning} onClose={() => setWarning()} />
       )}
     </Fragment>
   );

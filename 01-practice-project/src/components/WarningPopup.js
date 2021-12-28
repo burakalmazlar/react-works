@@ -8,7 +8,7 @@ const WarningPopup = (props) => {
   return (
     <React.Fragment>
       {ReactDOM.createPortal(
-        <div className={styles.backdrop}></div>,
+        <div className={styles.backdrop} onClick={props.onClose}></div>,
         document.getElementById("backdrop-root")
       )}
       {ReactDOM.createPortal(
