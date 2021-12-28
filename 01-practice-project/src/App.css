@@ -1,8 +1,9 @@
-section {
+.card {
   width: 30rem;
   max-width: 90%;
   margin: 1.5rem auto;
   padding: 1rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 12px #d1d1d1a4;
   border-radius: 10px;
+  background-color: whitesmoke;
 }

@@ -16,11 +16,11 @@ const UserForm = (props) => {
     if (name.length === 0) {
       setIsWarned(true);
       setWarning("Name is mandatory.");
-    } else if (age < 1) {
+    } else if (+age < 1) {
       setIsWarned(true);
       setWarning("Age must be more than zero.");
     } else {
-      props.onAddUser({ key: id, name: name, age: age });
+      props.onAddUser({ key: id, name: name, age: +age });
       setId((prev) => ++prev);
       setName("");
       setAge("");
@@ -41,26 +41,26 @@ const UserForm = (props) => {
   };
 
   return (
-    <form onSubmit={formSubmitHandler}>
-      <div>
-        <div className={styles["form-control"]}>
-          <label>Name</label>
-          <input type="text" value={name} onChange={nameChangeHandler} />
+    <div>
+      <form onSubmit={formSubmitHandler}>
+        <div>
+          <div className={styles["form-control"]}>
+            <label>Name</label>
+            <input type="text" value={name} onChange={nameChangeHandler} />
+          </div>
+          <div className={styles["form-control"]}>
+            <label>Age</label>
+            <input type="number" value={age} onChange={ageChangeHandler} />
+          </div>
+          <Button type="submit" className={styles.button}>
+            Add User
+          </Button>
         </div>
-        <div className={styles["form-control"]}>
-          <label>Age</label>
-          <input type="number" value={age} onChange={ageChangeHandler} />
-        </div>
-        <Button type="submit" className={styles.button}>
-          Add User
-        </Button>
-      </div>
-      <WarningPopup
-        visible={isWarned}
-        message={warning}
-        onClose={warningCloseHandler}
-      />
-    </form>
+      </form>
+      {isWarned && (
+        <WarningPopup message={warning} onClose={warningCloseHandler} />
+      )}
+    </div>
   );
 };
 

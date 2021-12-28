@@ -5,18 +5,16 @@ import styles from "./WarningPopup.module.css";
 
 const WarningPopup = (props) => {
   return (
-    <div style={{ display: props.visible ? "" : "none" }}>
+    <div>
       <div className={styles.backdrop}></div>
       <div className={styles.modal}>
-        <div className={styles.header}>
+        <header className={styles.header}>
           <h2>Warning</h2>
-        </div>
-        <div className={styles.content}>{props.message}</div>
-        <div className={styles.actions}>
-          <Button type="button" onClick={props.onClose}>
-            Close
-          </Button>
-        </div>
+        </header>
+        <p className={styles.content}>{props.message}</p>
+        <footer className={styles.actions}>
+          <Button onClick={props.onClose}>Close</Button>
+        </footer>
       </div>
     </div>
   );
