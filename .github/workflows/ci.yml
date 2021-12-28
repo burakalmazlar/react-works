@@ -50,6 +50,7 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            docker system prune --all --force --volumes
             export CNT=$(docker container ls --filter name=react01 --format '{{.Names}}')
             if [ $CNT == "react01" ]; then docker container rm -f react01; fi
             docker container run -d -p 3001:3000 --name react01 burakalmazlar/react01:${{ steps.autotag.outputs.new_tag }}
