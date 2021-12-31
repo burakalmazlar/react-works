@@ -15,7 +15,7 @@ function App() {
     try {
       setError(null);
 
-      const response = await fetch("http://localhost:8080/persons");
+      const response = await fetch("https://root.takaska.com/persons");
       if (!response.ok) {
         throw new Error("Something went wrong.");
       }
@@ -42,7 +42,7 @@ function App() {
   }, [fetchMovieHandler]);
 
   const addMovieHandler = useCallback(async (person) => {
-    const response = await fetch("http://localhost:8080/person/save", {
+    const response = await fetch("https://root.takaska.com/person/save", {
       method: "POST",
       body: JSON.stringify(person),
       headers: { "Content-Type": "application/json" },
