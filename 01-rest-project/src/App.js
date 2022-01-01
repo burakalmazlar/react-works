@@ -1,60 +1,57 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import MoviesList from "./components/MoviesList";
 import "./App.css";
-import AddMovie from "./components/AddMovie";
+import PersonsList from "./components/PersonsList";
+import AddPerson from "./components/AddPerson";
+import useHttp from "./hooks/use-http";
 
 function App() {
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [persons, setPersons] = useState([]);
 
-  const fetchMovieHandler = useCallback(async () => {
-    setLoading(true);
+  const [loading, error, sendRequest] = useHttp();
 
-    try {
-      setError(null);
+  const fetchPersonHandler = useCallback(() => {
+    sendRequest("https://root.takaska.com/persons", null, (response) =>
+      setPersons(response)
+    );
+  }, [sendRequest]);
 
-      const response = await fetch("https://root.takaska.com/persons");
-      if (!response.ok) {
-        throw new Error("Something went wrong.");
-      }
-      const data = await response.json();
-
-      setMovies(
-        data.map((person, index) => {
-          return {
-            id: person.id,
-            name: person.name,
-            age: person.age,
-          };
+  const addPersonHandler = useCallback(
+    (person) => {
+      sendRequest("https://root.takaska.com/person/save", person, (response) =>
+        setPersons((prev) => {
+          return [response, ...prev];
         })
       );
-    } catch (error) {
-      setError(error.message);
-    }
+    },
+    [sendRequest]
+  );
 
-    setLoading(false);
-  }, []);
+  const deletePersonHandler = useCallback(
+    (id) => {
+      sendRequest(
+        "https://root.takaska.com/person/delete/" + id,
+        null,
+        (response) =>
+          setPersons((prev) => {
+            return [...prev.filter((i) => i.id !== response)];
+          })
+      );
+    },
+    [sendRequest]
+  );
 
   useEffect(() => {
-    fetchMovieHandler();
-  }, [fetchMovieHandler]);
+    fetchPersonHandler();
+  }, [fetchPersonHandler]);
 
-  const addMovieHandler = useCallback(async (person) => {
-    const response = await fetch("https://root.takaska.com/person/save", {
-      method: "POST",
-      body: JSON.stringify(person),
-      headers: { "Content-Type": "application/json" },
-    });
-    if (!response.ok) {
-      throw new Error("Something went wrong.");
-    }
-    const data = await response.json();
-    fetchMovieHandler();
-  }, []);
-
-  let content = <MoviesList error={error} movies={movies} />;
+  let content = (
+    <PersonsList
+      error={error}
+      persons={persons}
+      onDelete={deletePersonHandler}
+    />
+  );
   if (loading) {
     content = <p>Loading.</p>;
   }
@@ -65,10 +62,10 @@ function App() {
   return (
     <React.Fragment>
       <section>
-        <AddMovie onAddMovie={addMovieHandler} />
+        <AddPerson onAddPerson={addPersonHandler} />
       </section>
       <section>
-        <button onClick={fetchMovieHandler}>Fetch Persons</button>
+        <button onClick={fetchPersonHandler}>Fetch Persons</button>
       </section>
       <section>{content}</section>
     </React.Fragment>

@@ -1,4 +1,4 @@
-.movie {
+.person {
   margin: 0.5rem;
   padding: 0.5rem;
   background-color: #230052;
@@ -6,15 +6,16 @@
   border-radius: 12px;
   text-align: center;
   color: white;
+  cursor: pointer;
 }
 
-.movie h2 {
+.person h2 {
   font-size: 2rem;
   color: #f7e702;
   margin: inherit;
 }
 
-.movie h3 {
+.person h3 {
   color: #eccf77;
   margin: 0;
   font-size: 1rem;
