@@ -1,10 +1,8 @@
-import React from "react";
 import useForm from "../hooks/use-form";
 import useInput from "../hooks/use-input";
-
 import FormControl from "./FormControl";
 
-function AddPerson(props) {
+const SimpleInput = (props) => {
   const {
     value: name,
     valid: nameIsValid,
@@ -13,15 +11,6 @@ function AddPerson(props) {
     onBlur: onNameBlur,
     reset: resetName,
   } = useInput((v) => v.length > 0);
-
-  const {
-    value: age,
-    valid: ageIsValid,
-    invalid: ageIsInvalid,
-    onChange: onAgeChange,
-    onBlur: onAgeBlur,
-    reset: resetAge,
-  } = useInput((v) => +v > 0);
 
   const {
     value: email,
@@ -35,17 +24,10 @@ function AddPerson(props) {
   const { valid: formIsValid, onSubmit: onFormSubmit } = useForm(
     [
       { value: name, valid: nameIsValid, reset: resetName },
-      { value: age, valid: ageIsValid, reset: resetAge },
       { value: email, valid: emailIsValid, reset: resetEmail },
     ],
-    (name, age, email) => {
-      console.log(name, age, email);
-      const person = {
-        name,
-        age,
-        email,
-      };
-      props.onAddPerson(person);
+    (name, email) => {
+      console.log(name, email);
     }
   );
 
@@ -62,16 +44,6 @@ function AddPerson(props) {
         error="Name is invalid."
       />
       <FormControl
-        id="age"
-        label="Your Age"
-        type="text"
-        value={age}
-        invalid={ageIsInvalid}
-        onChange={onAgeChange}
-        onBlur={onAgeBlur}
-        error="Age is invalid."
-      />
-      <FormControl
         id="email"
         label="Your E-Mail"
         type="email"
@@ -86,6 +58,6 @@ function AddPerson(props) {
       </div>
     </form>
   );
-}
+};
 
-export default AddPerson;
+export default SimpleInput;

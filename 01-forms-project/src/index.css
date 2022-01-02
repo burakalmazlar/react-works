@@ -13,16 +13,6 @@ body {
   background-color: #3f3f3f;
 }
 
-section {
-  margin: 1rem auto;
-  width: 90%;
-  max-width: 40rem;
-  text-align: center;
-  background-color: white;
-  padding: 1rem;
-  border-radius: 12px;
-}
-
 .app {
   width: 90%;
   max-width: 43rem;
@@ -52,7 +42,7 @@ section {
   padding: 0.5rem;
   border-radius: 4px;
   border: 1px solid #ccc;
-  width: 100%;
+  width: 20rem;
   max-width: 100%;
 }
 
@@ -89,7 +79,6 @@ button:disabled:active {
   background-color: #bbb6c7;
   border: 1px solid #a59bbb;
   color: #6b6a6a;
-  cursor: not-allowed;
 }
 
 button:hover,

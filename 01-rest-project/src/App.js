@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import "./App.css";
 import PersonsList from "./components/PersonsList";
 import AddPerson from "./components/AddPerson";
 import useHttp from "./hooks/use-http";
