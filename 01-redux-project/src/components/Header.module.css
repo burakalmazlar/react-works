@@ -24,7 +24,7 @@
 .header a {
   text-decoration: none;
   color: white;
-  font-size: 1.25rem;
+  font-size: 0.7rem;
 }
 
 .header a:hover,
@@ -33,7 +33,7 @@
 }
 
 .header button {
-  font-size: 1.25rem;
+  font-size: 0.85rem;
   background-color: #ffbb00;
   border: 1px solid #ffbb00;
   padding: 0.5rem 1.5rem;
