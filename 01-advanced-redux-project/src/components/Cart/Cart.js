@@ -6,12 +6,13 @@ import useCart from "../../hooks/use-cart";
 
 const Cart = (props) => {
   const { cart, add, remove } = useCart();
+  const cartItems = cart.items || [];
   return (
     <Modal onClose={props.onClose}>
       <Card className={classes.cart}>
-        <h2>Your Shopping Cart {cart.items.length > 0 ? "" : "Is Empty"}</h2>
+        <h2>Your Shopping Cart {cartItems.length > 0 ? "" : "Is Empty"}</h2>
         <ul>
-          {cart.items.map((item) => {
+          {cartItems.map((item) => {
             return (
               <CartItem
                 key={item.id}

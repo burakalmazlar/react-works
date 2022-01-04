@@ -8,14 +8,19 @@ const modifyQuantity = (product, quantity) => {
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    items: [],
+    items: null,
+    changed: false,
   },
   reducers: {
+    replaceCart: (state, action) => {
+      state.items = action.payload.items;
+    },
     addItem: (state, action) => {
       const item = action.payload.item;
-      const items = state.items;
+      const items = state.items || (state.items = []);
+      state.changed = true;
 
-      const existIndex = state.items.findIndex((i) => i.id === item.id);
+      const existIndex = items.findIndex((i) => i.id === item.id);
       if (existIndex > -1) {
         modifyQuantity(items[existIndex], 1);
       } else {
@@ -30,9 +35,10 @@ const cartSlice = createSlice({
     },
     removeItem: (state, action) => {
       const id = action.payload.id;
-      const items = state.items;
+      const items = state.items || (state.items = []);
+      state.changed = true;
 
-      const existIndex = state.items.findIndex((i) => i.id === id);
+      const existIndex = items.findIndex((i) => i.id === id);
       if (existIndex > -1) {
         const item = items[existIndex];
         if (item.quantity > 1) {

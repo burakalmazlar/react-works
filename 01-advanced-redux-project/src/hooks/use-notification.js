@@ -17,7 +17,7 @@ const useNotification = () => {
   useEffect(() => {
     const timer = setTimeout(
       dispatch.bind(null, notificationActions.clear()),
-      3000
+      2000
     );
     return () => {
       clearTimeout(timer);

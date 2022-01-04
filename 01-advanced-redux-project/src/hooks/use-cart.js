@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import useNotification from "./use-notification";
 import { useCallback, useEffect } from "react";
 
-let init = false;
-
 const useCart = () => {
   const { notify } = useNotification();
 
@@ -20,23 +18,49 @@ const useCart = () => {
     dispatch(cartActions.removeItem({ id }));
   };
 
-  const updateCart = useCallback(async (cart) => {
-    fetch(
-      "https://react-eab7b-default-rtdb.europe-west1.firebasedatabase.app/cart.json",
-      { method: "PUT", body: JSON.stringify(cart) }
-    );
-  }, []);
+  const fetchCart = useCallback(async () => {
+    try {
+      const response = await fetch(
+        "https://react-eab7b-default-rtdb.europe-west1.firebasedatabase.app/cart.json"
+      );
+      if (!response.ok) {
+        throw new Error();
+      }
+      const data = await response.json();
+      dispatch(cartActions.replaceCart(data));
+    } catch (error) {
+      notify("", "Failed!", "Something went wrong when updating your cart.");
+    }
+  }, [notify, dispatch]);
 
   useEffect(() => {
-    if (init) {
-      updateCart(cart);
-      notify("success", "Success!", "Your cart is updated successfully.");
-    }
+    fetchCart();
+  }, [fetchCart]);
 
-    return () => {
-      init = true;
-    };
-  }, [cart, updateCart, notify]);
+  const updateCart = useCallback(
+    async (cart) => {
+      try {
+        notify("", "Processing!", "Your cart is being updated.");
+        const response = await fetch(
+          "https://react-eab7b-default-rtdb.europe-west1.firebasedatabase.app/cart.json",
+          { method: "PUT", body: JSON.stringify({ items: cart.items }) }
+        );
+        if (!response.ok) {
+          throw new Error();
+        }
+        notify("success", "Success!", "Your cart is updated successfully.");
+      } catch (error) {
+        notify("", "Failed!", "Something went wrong when updating your cart.");
+      }
+    },
+    [notify]
+  );
+
+  useEffect(() => {
+    if (cart.changed) {
+      updateCart(cart);
+    }
+  }, [cart, updateCart]);
 
   return { cart, add, remove };
 };

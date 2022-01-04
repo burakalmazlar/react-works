@@ -7,7 +7,7 @@ const CartButton = (props) => {
     <button onClick={props.onClick} className={classes.button}>
       <span>My Cart</span>
       <span className={classes.badge}>
-        {cart.items.reduce((q, i) => q + i.quantity, 0)}
+        {(cart.items || []).reduce((q, i) => q + i.quantity, 0)}
       </span>
     </button>
   );
