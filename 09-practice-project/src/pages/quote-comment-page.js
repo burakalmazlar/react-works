@@ -1,6 +1,16 @@
 import Comments from "../components/comments/Comments";
+import NoQuotesFound from "../components/quotes/NoQuotesFound";
 
 const QuoteCommentPage = (props) => {
-  return <Comments quote={props.quote}></Comments>;
+  const { quote } = props;
+  return (
+    <>
+      {quote ? (
+        <Comments quote={quote}></Comments>
+      ) : (
+        <NoQuotesFound></NoQuotesFound>
+      )}
+    </>
+  );
 };
 export default QuoteCommentPage;

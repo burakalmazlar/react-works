@@ -4,21 +4,15 @@ import useQuote from "../hooks/use-quote";
 import QuoteDetailPage from "./quote-detail-page";
 import { Fragment } from "react";
 
-let initilized = false;
-
 const QuotesPage = (props) => {
-  const { quotes, fetchQuotes } = useQuote();
-  if (!initilized) {
-    fetchQuotes();
-    initilized = true;
-  }
+  const { quotes } = useQuote();
   return (
     <Fragment>
       <Route exact path="/quotes">
         <QuoteList quotes={quotes} />
       </Route>
       <Route path="/quotes/:id">
-        <QuoteDetailPage />
+        <QuoteDetailPage quotes={quotes} />
       </Route>
     </Fragment>
   );

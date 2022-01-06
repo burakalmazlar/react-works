@@ -2,6 +2,7 @@ import { useState } from "react";
 import useQuote from "../../hooks/use-quote";
 
 import classes from "./Comments.module.css";
+import CommentsList from "./CommentsList";
 import NewCommentForm from "./NewCommentForm";
 
 const Comments = (props) => {
@@ -12,8 +13,8 @@ const Comments = (props) => {
     setIsAddingComment(true);
   };
 
-  const onAddComment = (comment) => {
-    addComment(props.quote.id, comment);
+  const onAddComment = (text) => {
+    addComment(props.quote, text);
     setIsAddingComment(false);
   };
 
@@ -26,9 +27,7 @@ const Comments = (props) => {
         </button>
       )}
       {isAddingComment && <NewCommentForm onAddComment={onAddComment} />}
-      {props.quote.comments.map((c) => {
-        return <p key={c.id}>{c.comment}</p>;
-      })}
+      <CommentsList comments={props.quote.comments || []} />
     </section>
   );
 };
