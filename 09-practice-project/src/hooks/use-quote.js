@@ -57,7 +57,10 @@ const useQuote = (props) => {
   const addComment = async (quote, text) => {
     try {
       const body = {};
-      const { comments } = quote;
+      let { comments } = quote;
+      if (!comments) {
+        comments = [];
+      }
       body[quote.id] = {
         ...quote,
         comments: [{ id: comments.length + 1, text }, ...comments],

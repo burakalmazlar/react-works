@@ -1,20 +1,15 @@
-import { Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import QuoteList from "../components/quotes/QuoteList";
 import useQuote from "../hooks/use-quote";
 import QuoteDetailPage from "./quote-detail-page";
-import { Fragment } from "react";
 
 const QuotesPage = (props) => {
   const { quotes } = useQuote();
   return (
-    <Fragment>
-      <Route exact path="/quotes">
-        <QuoteList quotes={quotes} />
-      </Route>
-      <Route path="/quotes/:id">
-        <QuoteDetailPage quotes={quotes} />
-      </Route>
-    </Fragment>
+    <Routes>
+      <Route path="" element={<QuoteList quotes={quotes} />} />
+      <Route path=":id/*" element={<QuoteDetailPage quotes={quotes} />} />
+    </Routes>
   );
 };
 
