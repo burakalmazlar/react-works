@@ -1,11 +1,10 @@
 import { Fragment } from "react";
-import { Link, Route, Routes, useParams, useLocation } from "react-router-dom";
+import { Link, Route, Routes, useParams } from "react-router-dom";
 import HighlightedQuote from "../components/quotes/HighlightedQuote";
 import NoQuotesFound from "../components/quotes/NoQuotesFound";
 import QuoteCommentPage from "./quote-comment-page";
 
 const QuoteDetailPage = (props) => {
-  const location = useLocation();
   const pathVariables = useParams();
   const { id: quoteId } = pathVariables;
   const { quotes } = props;

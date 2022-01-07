@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import QuoteForm from "../components/quotes/QuoteForm";
 import useQuote from "../hooks/use-quote";
@@ -8,9 +9,15 @@ const NewQuotePage = (props) => {
 
   const addQuoteHandler = (author, text) => {
     addQuote(author, text);
-    navigate("/quotes");
+
     // {quoteProcessingState === 2 && <Redirect to="/quotes" />}
   };
+
+  useEffect(() => {
+    if (quoteProcessingState === 2) {
+      navigate("/quotes");
+    }
+  }, [quoteProcessingState, navigate]);
 
   return (
     <QuoteForm

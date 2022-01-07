@@ -14,6 +14,9 @@ const quoteSlice = createSlice({
     },
     comment: (state, action) => {
       const quote = state.quotes.find((q) => q.id === action.payload.quoteId);
+      if (!quote.comments) {
+        quote.comments = [];
+      }
       quote.comments.unshift({
         id: quote.comments.length + 1,
         text: action.payload.text,

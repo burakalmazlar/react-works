@@ -21,9 +21,10 @@ const QuoteForm = (props) => {
     }
   }
 
-  const leaveHandler = (location) => {
-    return "Are you sure navigating to '" + location.pathname + "' ?";
-  };
+  console.log(formHasChanges);
+  // const leaveHandler = (location) => {
+  //   return "Are you sure navigating to '" + location.pathname + "' ?";
+  // };
 
   return (
     <Card>
