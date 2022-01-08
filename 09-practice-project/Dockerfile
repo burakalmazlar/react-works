@@ -1,6 +1,4 @@
-FROM node:17
-
-EXPOSE 3001
+FROM node:17 as build
 
 RUN mkdir -p /usr/src/app
 
@@ -12,7 +10,16 @@ COPY package.json ./
 
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
-RUN npm install
+RUN npm install && npm run build
 
-CMD npm start
+FROM nginx:alpine as serve
+
+COPY --from=build /usr/src/app/build /usr/share/nginx/html
+
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx/nginx.conf /etc/nginx/conf.d
+
+EXPOSE 80
+
+CMD ["nginx","-g","daemon off;"]
 
