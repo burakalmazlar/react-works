@@ -1,42 +1,52 @@
+import { MongoClient, ObjectId } from "mongodb";
+
 import MeetupDetail from "../../components/meetups/MeetupDetail";
-import { useRouter } from "next/router";
 
 const MeetupDetailPage = (props) => {
-  const router = useRouter();
-
   return <MeetupDetail meetup={props.meetup} />;
 };
 
 export const getStaticPaths = async () => {
+  const client = await MongoClient.connect(
+    "mongodb://user:pass@localhost:27017/database"
+  );
+
+  const db = client.db();
+
+  const meetupsCollection = db.collection("meetups");
+
+  const meetupsResult = await meetupsCollection.find({}, { _id: 1 }).toArray();
+
+  const meetupsPaths = meetupsResult.map((m) => ({
+    params: { meetupId: m._id.toString() },
+  }));
+
+  client.close();
+
   return {
     fallback: true,
-    paths: [{ params: { meetupId: "1" } }, { params: { meetupId: "2" } }],
+    paths: meetupsPaths,
   };
 };
 
 export const getStaticProps = async (context) => {
   const meetupId = context.params.meetupId;
 
-  const DUMMY_DATA = [
-    {
-      id: "1",
-      title: "Barcelona Meetup",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/c/c5/Barcelona._View_from_Tibidabo.jpg",
-      address: "Barcelona / Spain",
-      description: "Meetup in Barcelona",
-    },
-    {
-      id: "2",
-      title: "Paris Meetup",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/e/e6/Paris_Night.jpg",
-      address: "Paris / France",
-      description: "Meetup in Paris",
-    },
-  ];
+  const client = await MongoClient.connect(
+    "mongodb://user:pass@localhost:27017/database"
+  );
 
-  const meetup = DUMMY_DATA.find((m) => m.id === meetupId);
+  const db = client.db();
+
+  const meetupsCollection = db.collection("meetups");
+
+  const meetupResult = await meetupsCollection.findOne({
+    _id: ObjectId(meetupId),
+  });
+
+  const meetup = { ...meetupResult, _id: meetupResult._id.toString() };
+
+  client.close();
 
   return { props: { meetup }, revalidate: 10 };
 };

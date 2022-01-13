@@ -1,4 +1,5 @@
 import classes from "./MeetupDetail.module.css";
+import Image from "next/image";
 
 const MeetupDetail = (props) => {
   const { meetup } = props;
@@ -9,10 +10,9 @@ const MeetupDetail = (props) => {
 
   const { id, title, image, address, description } = props.meetup;
 
-  console.log(classes);
   return (
     <section className={classes.detail}>
-      <img src={image} alt={title} />
+      <img src={image} />
       <h2>{title}</h2>
       <address>{address}</address>
       <p>{description}</p>

@@ -1,3 +1,7 @@
+import { MongoClient } from "mongodb";
+import { Fragment } from "react";
+import Head from "next/head";
+
 import MeetupList from "../components/meetups/MeetupList";
 
 export const DUMMY_DATA = [
@@ -20,7 +24,14 @@ export const DUMMY_DATA = [
 ];
 
 const HomePage = (props) => {
-  return <MeetupList meetups={props.meetups}></MeetupList>;
+  return (
+    <Fragment>
+      <Head>
+        <title>React Meetups</title>
+      </Head>
+      <MeetupList meetups={props.meetups}></MeetupList>
+    </Fragment>
+  );
 };
 
 // export const getServerSideProps = async (context) => {
@@ -28,7 +39,24 @@ const HomePage = (props) => {
 // };
 
 export const getStaticProps = async (context) => {
-  return { props: { meetups: DUMMY_DATA }, revalidate: 10 };
+  const client = await MongoClient.connect(
+    "mongodb://user:pass@localhost:27017/database"
+  );
+
+  const db = client.db();
+
+  const meetupsCollection = db.collection("meetups");
+
+  const meetupsResult = await meetupsCollection.find().toArray();
+
+  const meetups = meetupsResult.map((m) => ({
+    ...m,
+    _id: m._id.toString(),
+  }));
+
+  client.close();
+
+  return { props: { meetups }, revalidate: 10 };
 };
 
 export default HomePage;
