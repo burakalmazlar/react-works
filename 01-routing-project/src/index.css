@@ -24,3 +24,11 @@ h3,
 p {
   color: #042b5f;
 }
+
+.route-wrapper {
+  position: relative;
+}
+
+.route-wrapper > div {
+  position: absolute;
+}
