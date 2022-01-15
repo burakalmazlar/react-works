@@ -1,13 +1,13 @@
-import { Fragment } from "react";
-import Todo from "../models/todos";
-import NewTodo from "./NewTodo";
+import React from "react";
+import useTodos from "../hooks/use-todos";
 import TodoItem from "./TodoItem";
-import "./Todos.css";
+import classes from "./Todos.module.css";
 
-const Todos: React.FC<{ items: Todo[] }> = (props) => {
+const Todos: React.FC = () => {
+  const { todos } = useTodos();
   return (
-    <ul className={`todos`}>
-      {props.items.map((item, index) => (
+    <ul className={classes.todos}>
+      {todos.map((item, index) => (
         <TodoItem key={index} {...item} />
       ))}
     </ul>

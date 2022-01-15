@@ -1,8 +1,19 @@
+import React, { MouseEventHandler } from "react";
+import useTodos from "../hooks/use-todos";
 import Todo from "../models/todos";
-import "./TodoItem.css";
+import classes from "./TodoItem.module.css";
 
 const TodoItem: React.FC<Todo> = (props) => {
-  return <li className={`item`}>{props.text}</li>;
+  const { removeTodo } = useTodos();
+  const itemOnClick: MouseEventHandler = (event) => {
+    removeTodo(props.id);
+  };
+
+  return (
+    <li className={classes.item} onClick={itemOnClick}>
+      {props.text}
+    </li>
+  );
 };
 
 export default TodoItem;

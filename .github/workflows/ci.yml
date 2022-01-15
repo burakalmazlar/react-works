@@ -34,8 +34,8 @@ jobs:
       - name: Build & Push Docker Image to Docker Hub
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
-          directory: ${{ github.workspace }}/09-practice-project
-          dockerfile: ${{ github.workspace }}/09-practice-project/Dockerfile
+          directory: ${{ github.workspace }}/react-typescript
+          dockerfile: ${{ github.workspace }}/react-typescript/Dockerfile
           image: burakalmazlar/react01
           tags: ${{ steps.autotag.outputs.new_tag }}, latest
           registry: docker.io

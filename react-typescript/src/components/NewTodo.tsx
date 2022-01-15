@@ -1,16 +1,10 @@
-import {
-  FC,
-  FormEvent,
-  FormEventHandler,
-  LegacyRef,
-  MutableRefObject,
-  RefObject,
-  useRef,
-} from "react";
+import React, { FormEvent, FormEventHandler, RefObject, useRef } from "react";
+import useTodos from "../hooks/use-todos";
+import classes from "./NewTodo.module.css";
 
-import "./NewTodo.css";
+const NewTodo: React.FC = () => {
+  const { addTodo } = useTodos();
 
-const NewTodo: FC<{ addTodo: (text: string) => void }> = (props) => {
   const text: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (
@@ -18,11 +12,11 @@ const NewTodo: FC<{ addTodo: (text: string) => void }> = (props) => {
   ) => {
     e.preventDefault();
 
-    props.addTodo(text.current!.value);
+    addTodo(text.current!.value);
   };
 
   return (
-    <form onSubmit={onSubmit} className={`form`}>
+    <form onSubmit={onSubmit} className={classes.form}>
       <label>Todo Text</label>
       <input ref={text} />
       <button>Add Todo</button>
