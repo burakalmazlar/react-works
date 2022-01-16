@@ -1,12 +1,15 @@
-import React, { useState, Fragment, useRef } from "react";
+import React, { useState, Fragment, useRef, useReducer } from "react";
 
 import WarningPopup from "./WarningPopup";
 import styles from "./UserForm.module.css";
 import Button from "./UI/Button/Button";
+import Input from "./UI/Input/Input";
 
 const UserForm = (props) => {
   const [id, setId] = useState(1);
-  const [warning, setWarning] = useState();
+  const [warning, setWarning] = useReducer((state, action) => {
+    return action;
+  }, null);
   const nameRef = useRef();
   const ageRef = useRef();
 
@@ -15,36 +18,39 @@ const UserForm = (props) => {
     const name = nameRef.current.value;
     const age = +ageRef.current.value;
     if (name.length === 0) {
-      setWarning("Name is mandatory.");
+      setWarning({ text: `Name is mandatory.`, ref: nameRef });
     } else if (age < 1) {
-      setWarning("Age must be more than zero.");
+      setWarning({
+        text: `Age must be more than zero.`,
+        ref: ageRef,
+      });
     } else {
       props.onAddUser({ key: id, name: name, age: age });
       setId((prev) => ++prev);
       nameRef.current.value = "";
       ageRef.current.value = "";
+      nameRef.current.focus();
     }
+  };
+
+  const closeWarning = () => {
+    warning.ref.current.focus();
+    setWarning(null);
   };
 
   return (
     <Fragment>
       <form onSubmit={formSubmitHandler}>
         <div>
-          <div className={styles["form-control"]}>
-            <label>Name</label>
-            <input type="text" ref={nameRef} />
-          </div>
-          <div className={styles["form-control"]}>
-            <label>Age</label>
-            <input type="number" ref={ageRef} />
-          </div>
+          <Input label={`Name`} type={"text"} ref={nameRef} />
+          <Input label={`Age`} type={`number`} ref={ageRef} />
           <Button type="submit" className={styles.button}>
             Add User
           </Button>
         </div>
       </form>
       {warning && (
-        <WarningPopup message={warning} onClose={() => setWarning()} />
+        <WarningPopup message={warning.text} onClose={closeWarning} />
       )}
     </Fragment>
   );
